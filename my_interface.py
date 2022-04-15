@@ -449,130 +449,185 @@ class Toplevel1:
         self.stats[1].configure(image=image)  # count
         self.stats[1].image = image
 
-    def computing(self):
-        if self.data is None:
-            messagebox.showinfo("Attention", "Please, select database")
-            return
-        messagebox.showinfo("Attention", "Wait, while parameters will be computed")
-        # self.parameters, self.size_train, self.best_score = cross_validation(self.data)
-        self.parameters = {'get_histogram': 28, 'get_dft': 88, 'get_dct': 3, 'get_gradient': 2,
-                           'get_scale': 0.15000000000000002}
-        str = "[ "
-        for method in self.methods:
-            if method == get_scale:
-                str += '{0:.2f}'.format(self.parameters[method.__name__])
-            else:
-                str += '{}'.format(self.parameters[method.__name__])
-            str += ";  "
-        str = str[:-3]
-        str += " ]"
-        self.size_train = 6
-        self.best_score = 1
-        self.bestParameterVoiting.configure(text=str)
-        self.accuracyVoiting.configure(text="{0:.4f}".format(self.best_score))
-        print(self.parameters)
-        print(self.size_train)
-        print(self.best_score)
-        self.classif()
+        # 3 on test data
+        # x_train, x_test, y_train, y_test = split_data3(self.data, images_per_person_in_test=7)
+        # train = mesh_data([x_train, y_train])
+        # test = mesh_data([x_test, y_test])
+        # parameters = {'get_histogram': 28, 'get_dft': 88, 'get_dct': 3, 'get_gradient': 2,
+        #               'get_scale': 0.15000000000000002}
+        # #sizes = range(int(self.number_face_test[0]), int(self.number_face_test[1]), 40)
+        # sizes = range(int(self.number_face_test[0]), int(self.number_face_test[1]), 1)
+        # # sizes = range(10, 200, 10)
+        # test_results = [sizes, []]
+        # for size in sizes:
+        #     # test_voting(train, test, parameters):
+        #     test_results[1].append(test_voting(train, choose_n_from_data(test, size), parameters))
+        # # print(parameters[str(self.method.__name__)])
+        # plt.rcParams["font.size"] = "7"
+        # fig = plt.figure(figsize=(4.5, 3.5))
+        # ax = fig.add_subplot(111)
+        # ax.plot(test_results[0], test_results[1])
+        # print(test_results[0], test_results[1])
+        # ax.set(xlabel='Размер тестовой выборки',
+        #        ylabel='Точность',
+        #        title='Зависимость точности от размера тестовой выборки')
+        # buf = io.BytesIO()
+        # fig.savefig(buf)
+        # buf.seek(0)
+        # image = Image.open(buf)
+        # image = ImageTk.PhotoImage(image)
+        # self.stats[1].configure(image=image)  # count
+        # self.stats[1].image = image
 
-    def classif(self):
-        if self.parameters is None or self.size_train is None:
-            messagebox.showinfo("Attention", "Please, start training first")
-            return
+        # from collections import Counter
+        # def Vote(x_tr, y_tr, x_ts):
+        #     r_DCT = DCT(x_tr, y_tr, x_ts)
+        #     r_DFT = DFT(x_tr, y_tr, x_ts)
+        #     r_Pts = RandomP(x_tr, y_tr, x_ts)
+        #     r_Scale = Scale(x_tr, y_tr, x_ts)
+        #     r_Grad = Gradient(x_tr, y_tr, x_ts)
+        #     r_Hist = Hist(x_tr, y_tr, x_ts)
+        #     fres = []
+        #     for i in range(len(x_ts)):
+        #         res = [r_DCT[i], r_DFT[i], r_Pts[i], r_Scale[i], r_Grad[i], r_Hist[i]]
+        #         fres.append(Counter(res).most_common(1)[0][0])
+        #     return fres
+        #
+        # hist_results = []
+        # for i in range(10, 60, 1):
+        #     cXtr, cXts, cYtr, cYts = train_test_split(images, folderNames, stratify=folderNames, test_size=0.01 * i,
+        #                                               random_state=18)
+        #     hist_results.append(accuracy_score(Vote(cXtr, cYtr, cXts), cYts))
+        #
+        # fig, ax = plt.subplots()
+        # ax.set_xlabel('Процент тестовой выборки')
+        # ax.set_ylabel('Точность')
+        # ax.plot(range(0, 50, 1), hist_results)
 
-        image = cv2.cvtColor(cv2.imread(self.s_filename), cv2.COLOR_BGR2GRAY)
-        x_train, x_test, y_train, y_test = split_data(self.data, self.size_train)
-        x_test = []
-        x_test.append(image / 255)
-        messagebox.showinfo("Attention", "Wait, while classification will be computed")
-        v = voting([x_train, y_train], x_test, self.parameters)
+    # def computing(self):
+    #     if self.data is None:
+    #         messagebox.showinfo("Attention", "Please, select database")
+    #         return
+    #     messagebox.showinfo("Attention", "Wait, while parameters will be computed")
+    #     # self.parameters, self.size_train, self.best_score = cross_validation(self.data)
+    #     self.parameters = {'get_histogram': 28, 'get_dft': 88, 'get_dct': 3, 'get_gradient': 2,
+    #                        'get_scale': 0.15000000000000002}
+    #     str = "[ "
+    #     for method in self.methods:
+    #         if method == get_scale:
+    #             str += '{0:.2f}'.format(self.parameters[method.__name__])
+    #         else:
+    #             str += '{}'.format(self.parameters[method.__name__])
+    #         str += ";  "
+    #     str = str[:-3]
+    #     str += " ]"
+    #     self.size_train = 6
+    #     self.best_score = 1
+    #     self.bestParameterVoiting.configure(text=str)
+    #     self.accuracyVoiting.configure(text="{0:.4f}".format(self.best_score))
+    #     print(self.parameters)
+    #     print(self.size_train)
+    #     print(self.best_score)
+    #     self.classif()
 
-        example1 = x_test[0] * 255
-
-        print(v[0])
-
-        image = Image.fromarray(example1)
-        image = ImageTk.PhotoImage(image)
-        self.images_1[0].configure(image=image)
-        self.images_1[0].image = image
-
-        """graphs here"""
-        hist, bins = get_histogram(example1 / 255, self.parameters["get_histogram"])
-        hist = np.insert(hist, 0, 0.0)
-        fig = plt.figure(figsize=(1.1, 1.1))
-        ax = fig.add_subplot(111)
-        ax.plot(bins, hist)
-        plt.xticks(color='w')
-        plt.yticks(color='w')
-        buf = io.BytesIO()
-        fig.savefig(buf)
-        buf.seek(0)
-        image = Image.open(buf)
-        image = ImageTk.PhotoImage(image)
-        self.images_1[1].configure(image=image)
-        self.images_1[1].image = image
-
-        lll1 = tk.Label(self.frame_stats, text="DFT")
-        lll1.grid(row=0, column=1, padx=10)
-        dft = get_dft(example1, self.parameters["get_dft"])
-        fig = plt.figure(figsize=(5, 5))
-        ax = fig.add_subplot(111)
-        ax.pcolormesh(range(dft.shape[0]),
-                      range(dft.shape[0]),
-                      np.flip(dft, 0), cmap="Greys")
-        """graphs here"""
-        plt.xticks(color='w')
-        plt.yticks(color='w')
-        buf = io.BytesIO()
-        fig.savefig(buf)
-        buf.seek(0)
-        image = Image.open(buf)
-        image = ImageTk.PhotoImage(image)
-        self.stats[0].configure(image=image)
-        self.stats[0].image = image
-
-        dct = get_dct(example1, self.parameters["get_dct"])
-        fig = plt.figure(figsize=(1.1, 1.1))
-        ax = fig.add_subplot(111)
-        ax.pcolormesh(range(dct.shape[0]),
-                      range(dct.shape[0]),
-                      np.flip(dct, 0), cmap="Greys")
-        plt.xticks(color='w')
-        plt.yticks(color='w')
-        buf = io.BytesIO()
-        fig.savefig(buf)
-        buf.seek(0)
-        image = Image.open(buf)
-        image = ImageTk.PhotoImage(image)
-        self.images_1[3].configure(image=image)
-        self.images_1[3].image = image
-
-        hist = get_gradient(example1, self.parameters["get_gradient"])
-        fig = plt.figure(figsize=(1.1, 1.1))
-        ax = fig.add_subplot(111)
-        ax.plot(range(0, len(hist)), hist)
-        plt.xticks(color='w')
-        plt.yticks(color='w')
-        buf = io.BytesIO()
-        fig.savefig(buf)
-        buf.seek(0)
-        image = Image.open(buf)
-        image = ImageTk.PhotoImage(image)
-        self.images_1[4].configure(image=image)
-        self.images_1[4].image = image
-
-        image = Image.fromarray(cv2.resize(example1,
-                                           (int(self.parameters["get_scale"] * example1.shape[0]),
-                                            int(self.parameters["get_scale"] * example1.shape[1])),
-                                           interpolation=cv2.INTER_AREA))
-        image = ImageTk.PhotoImage(image)
-        self.images_1[5].configure(image=image)
-        self.images_1[5].image = image
-
-        image = Image.fromarray(self.data[0][10 * v[0]] * 255)
-        image = ImageTk.PhotoImage(image)
-        self.images_1[6].configure(image=image)
-        self.images_1[6].image = image
+    # def classif(self):
+    #     if self.parameters is None or self.size_train is None:
+    #         messagebox.showinfo("Attention", "Please, start training first")
+    #         return
+    #
+    #     image = cv2.cvtColor(cv2.imread(self.s_filename), cv2.COLOR_BGR2GRAY)
+    #     x_train, x_test, y_train, y_test = split_data(self.data, self.size_train)
+    #     x_test = []
+    #     x_test.append(image / 255)
+    #     messagebox.showinfo("Attention", "Wait, while classification will be computed")
+    #     v = voting([x_train, y_train], x_test, self.parameters)
+    #
+    #     example1 = x_test[0] * 255
+    #
+    #     print(v[0])
+    #
+    #     image = Image.fromarray(example1)
+    #     image = ImageTk.PhotoImage(image)
+    #     self.images_1[0].configure(image=image)
+    #     self.images_1[0].image = image
+    #
+    #     """graphs here"""
+    #     hist, bins = get_histogram(example1 / 255, self.parameters["get_histogram"])
+    #     hist = np.insert(hist, 0, 0.0)
+    #     fig = plt.figure(figsize=(1.1, 1.1))
+    #     ax = fig.add_subplot(111)
+    #     ax.plot(bins, hist)
+    #     plt.xticks(color='w')
+    #     plt.yticks(color='w')
+    #     buf = io.BytesIO()
+    #     fig.savefig(buf)
+    #     buf.seek(0)
+    #     image = Image.open(buf)
+    #     image = ImageTk.PhotoImage(image)
+    #     self.images_1[1].configure(image=image)
+    #     self.images_1[1].image = image
+    #
+    #     lll1 = tk.Label(self.frame_stats, text="DFT")
+    #     lll1.grid(row=0, column=1, padx=10)
+    #     dft = get_dft(example1, self.parameters["get_dft"])
+    #     fig = plt.figure(figsize=(5, 5))
+    #     ax = fig.add_subplot(111)
+    #     ax.pcolormesh(range(dft.shape[0]),
+    #                   range(dft.shape[0]),
+    #                   np.flip(dft, 0), cmap="Greys")
+    #     """graphs here"""
+    #     plt.xticks(color='w')
+    #     plt.yticks(color='w')
+    #     buf = io.BytesIO()
+    #     fig.savefig(buf)
+    #     buf.seek(0)
+    #     image = Image.open(buf)
+    #     image = ImageTk.PhotoImage(image)
+    #     self.stats[0].configure(image=image)
+    #     self.stats[0].image = image
+    #
+    #     dct = get_dct(example1, self.parameters["get_dct"])
+    #     fig = plt.figure(figsize=(1.1, 1.1))
+    #     ax = fig.add_subplot(111)
+    #     ax.pcolormesh(range(dct.shape[0]),
+    #                   range(dct.shape[0]),
+    #                   np.flip(dct, 0), cmap="Greys")
+    #     plt.xticks(color='w')
+    #     plt.yticks(color='w')
+    #     buf = io.BytesIO()
+    #     fig.savefig(buf)
+    #     buf.seek(0)
+    #     image = Image.open(buf)
+    #     image = ImageTk.PhotoImage(image)
+    #     self.images_1[3].configure(image=image)
+    #     self.images_1[3].image = image
+    #
+    #     hist = get_gradient(example1, self.parameters["get_gradient"])
+    #     fig = plt.figure(figsize=(1.1, 1.1))
+    #     ax = fig.add_subplot(111)
+    #     ax.plot(range(0, len(hist)), hist)
+    #     plt.xticks(color='w')
+    #     plt.yticks(color='w')
+    #     buf = io.BytesIO()
+    #     fig.savefig(buf)
+    #     buf.seek(0)
+    #     image = Image.open(buf)
+    #     image = ImageTk.PhotoImage(image)
+    #     self.images_1[4].configure(image=image)
+    #     self.images_1[4].image = image
+    #
+    #     image = Image.fromarray(cv2.resize(example1,
+    #                                        (int(self.parameters["get_scale"] * example1.shape[0]),
+    #                                         int(self.parameters["get_scale"] * example1.shape[1])),
+    #                                        interpolation=cv2.INTER_AREA))
+    #     image = ImageTk.PhotoImage(image)
+    #     self.images_1[5].configure(image=image)
+    #     self.images_1[5].image = image
+    #
+    #     image = Image.fromarray(self.data[0][10 * v[0]] * 255)
+    #     image = ImageTk.PhotoImage(image)
+    #     self.images_1[6].configure(image=image)
+    #     self.images_1[6].image = image
 
 
 # The following code is added to facilitate the Scrolled widgets you specified.
