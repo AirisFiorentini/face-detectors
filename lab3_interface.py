@@ -35,8 +35,8 @@ class Toplevel1:
         self.parameters = None
         self.size_train = None
         self.best_score = 0
-        self.authors = {0: "Айвазовский", 1: "Дали",
-                        2: "Клод Моне", 3: "Пикассо", 4: "Шишкин"}
+        self.authors = {0: "Шишкин", 1: "Дали",
+                        2: "Клод Моне", 3: "Пикассо", 4: "Айвазовский"}
 
         _bgcolor = '#d9d9d9'  # X11 color: 'gray85'
         _fgcolor = '#000000'  # X11 color: 'black'
@@ -140,7 +140,6 @@ class Toplevel1:
         # self.Label1.configure(highlightcolor="black")
         # self.Label1.configure(text='''Choose method''')
 
-        # TODO: add func
         self.classifButton1 = tk.Button(self.root)
         self.classifButton1.place(relx=0.138, rely=0.69, height=44, width=77)
         self.classifButton1.configure(activebackground="#4b61f5")
@@ -158,22 +157,7 @@ class Toplevel1:
 
         lbl6 = tk.Label(self.frame_stats, text="Original image:")
         lbl6.grid(row=0, column=1, padx=10, sticky='NW')
-        # TODO: check labels
-        # lbl7 = tk.Label(self.frame_example, text="histogram:")
-        # lbl7.grid(row=0, column=2, padx=10, sticky='NW')
-        #
-        # lbl8 = tk.Label(self.frame_example, text="DFT:")
-        # # lbl8.grid(row=0, column=3, padx=10, sticky='NW')
-        #
-        # lbl9 = tk.Label(self.frame_example, text="DCT:")
-        # lbl9.grid(row=0, column=4, padx=10, sticky='NW')
-        #
-        # lbl10 = tk.Label(self.frame_example, text="gradient:")
-        # lbl10.grid(row=0, column=5, padx=10, sticky='NW')
-        #
-        # lbl11 = tk.Label(self.frame_example, text="scale:")
-        # lbl11.grid(row=0, column=6, padx=10, sticky='NW')
-        #
+
         lbl12 = tk.Label(self.frame_stats, text="")
         lbl12.grid(row=0, column=2, padx=10, sticky='NW')
 
@@ -234,7 +218,7 @@ class Toplevel1:
     def classif(self):
         input_image = cv2.imread(self.s_filename)
         x_train, x_test, y_train, y_test = split_data(self.data, self.size_train)
-        # messagebox.showinfo("Attention", "Wait, while classification will be computed")
+        messagebox.showinfo("Attention", "Wait, while classification will be computed")
         vote_answer, methods_answer = voting([x_train, y_train], [input_image])
 
         image = Image.fromarray(cv2.cvtColor(input_image, cv2.COLOR_BGR2RGB))
@@ -246,7 +230,6 @@ class Toplevel1:
         for i in range(len(self.methods)):
             fig = plt.figure(figsize=(1.1, 1.1))
             ax = fig.add_subplot(111)
-            # TODO: displace
             ax.text(0, 0.5,
                     f'{self.methods[i].__name__}' + ':\n\n' + self.authors[methods_answer[self.methods[i].__name__][0]],
                     transform=plt.gca().transAxes, fontdict={'size': 10})
@@ -262,7 +245,6 @@ class Toplevel1:
         # vote res
         fig = plt.figure(figsize=(1.1, 1.1))
         ax = fig.add_subplot(111)
-        # TODO: displace
         ax.text(0, 0.5,
                 'Voting' + ':\n\n' + self.authors[vote_answer[0]],
                 transform=plt.gca().transAxes, fontdict={'size': 10})
@@ -280,7 +262,6 @@ class Toplevel1:
             to_draw = method(input_image)[1]
             fig = plt.figure(figsize=(1.1, 1.1))
             ax = fig.add_subplot(111)
-            # TODO: displace
             if method == Euler:
                 ax.text(0, 0.5,
                         str(method.__name__) + '\n\n' + str(to_draw),

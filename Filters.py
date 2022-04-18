@@ -134,6 +134,8 @@ def voting(data, new_elements):
                 temp[t] += 1
             else:
                 temp[t] = 1
+            if method == sobel:
+                temp += 0.5
         best_size = sorted(temp.items(), key=lambda item: item[1], reverse=True)[0]
         tmp.append(best_size[0])
     return tmp, res
