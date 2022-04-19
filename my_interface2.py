@@ -259,100 +259,105 @@ class Toplevel1:
             messagebox.showinfo("Attention", "Please, start training first")
             return
 
-        image = cv2.cvtColor(cv2.imread(self.s_filename), cv2.COLOR_BGR2GRAY)
-        x_train, x_test, y_train, y_test = split_data(self.data, self.size_train)
-        x_test = []
-        x_test.append(image / 255)
-        messagebox.showinfo("Attention", "Wait, while classification will be computed")
-        v = voting([x_train, y_train], x_test, self.parameters)
-        example1 = x_test[0] * 255
-        image = Image.fromarray(example1)
-        image = ImageTk.PhotoImage(image)
-        self.images_1[0].configure(image=image)
-        self.images_1[0].image = image
+        self.data = read_faces_from_disk_2(self)
 
-        """histogram"""
-        hist, bins = get_histogram(example1 / 255, self.parameters["get_histogram"])
-        hist = np.insert(hist, 0, 0.0)
-        # fig = plt.figure(figsize=(1.1, 1.1))
-        # ax = fig.add_subplot(111)
-        # ax.plot(bins, hist)
-        # plt.xticks(color='w')
-        # plt.yticks(color='w')
-        # buf = io.BytesIO()
-        # fig.savefig(buf)
-        # buf.seek(0)
-        # image = Image.open(buf)
-        # image = ImageTk.PhotoImage(image)
-        # self.images_1[1].configure(image=image)
-        # self.images_1[1].image = image
+        for im in self.data:
+            image = cv2.cvtColor(cv2.imread(im), cv2.COLOR_BGR2GRAY)
+            x_train, x_test, y_train, y_test = split_data(self.data, self.size_train)
+            x_test = []
+            x_test.append(image / 255)
+            messagebox.showinfo("Attention", "Wait, while classification will be computed")
+            v = voting([x_train, y_train], x_test, self.parameters)
+            example1 = x_test[0] * 255
+            image = Image.fromarray(example1)
+            image = ImageTk.PhotoImage(image)
+            self.images_1[0].configure(image=image)
+            self.images_1[0].image = image
+
+            """histogram"""
+            hist, bins = get_histogram(example1 / 255, self.parameters["get_histogram"])
+            hist = np.insert(hist, 0, 0.0)
+            # fig = plt.figure(figsize=(1.1, 1.1))
+            # ax = fig.add_subplot(111)
+            # ax.plot(bins, hist)
+            # plt.xticks(color='w')
+            # plt.yticks(color='w')
+            # buf = io.BytesIO()
+            # fig.savefig(buf)
+            # buf.seek(0)
+            # image = Image.open(buf)
+            # image = ImageTk.PhotoImage(image)
+            # self.images_1[1].configure(image=image)
+            # self.images_1[1].image = image
 
 
-        """dft"""
-        # lll1 = tk.Label(self.frame_stats, text="DFT")
-        # lll1.grid(row=0, column=1, padx=10)
-        dft = get_dft(example1, self.parameters["get_dft"])
-        # fig = plt.figure(figsize=(5, 5))
-        # ax = fig.add_subplot(111)
-        # ax.pcolormesh(range(dft.shape[0]),
-        #               range(dft.shape[0]),
-        #               np.flip(dft, 0), cmap="Greys")
-        # """graphs here"""
-        # plt.xticks(color='w')
-        # plt.yticks(color='w')
-        # buf = io.BytesIO()
-        # fig.savefig(buf)
-        # buf.seek(0)
-        # image = Image.open(buf)
-        # image = ImageTk.PhotoImage(image)
-        # self.stats[0].configure(image=image)
-        # self.stats[0].image = image
+            """dft"""
+            # lll1 = tk.Label(self.frame_stats, text="DFT")
+            # lll1.grid(row=0, column=1, padx=10)
+            dft = get_dft(example1, self.parameters["get_dft"])
+            # fig = plt.figure(figsize=(5, 5))
+            # ax = fig.add_subplot(111)
+            # ax.pcolormesh(range(dft.shape[0]),
+            #               range(dft.shape[0]),
+            #               np.flip(dft, 0), cmap="Greys")
+            # """graphs here"""
+            # plt.xticks(color='w')
+            # plt.yticks(color='w')
+            # buf = io.BytesIO()
+            # fig.savefig(buf)
+            # buf.seek(0)
+            # image = Image.open(buf)
+            # image = ImageTk.PhotoImage(image)
+            # self.stats[0].configure(image=image)
+            # self.stats[0].image = image
 
-        """dct"""
-        dct = get_dct(example1, self.parameters["get_dct"])
-        # fig = plt.figure(figsize=(1.1, 1.1))
-        # ax = fig.add_subplot(111)
-        # ax.pcolormesh(range(dct.shape[0]),
-        #               range(dct.shape[0]),
-        #               np.flip(dct, 0), cmap="Greys")
-        # plt.xticks(color='w')
-        # plt.yticks(color='w')
-        # buf = io.BytesIO()
-        # fig.savefig(buf)
-        # buf.seek(0)
-        # image = Image.open(buf)
-        # image = ImageTk.PhotoImage(image)
-        # self.images_1[3].configure(image=image)
-        # self.images_1[3].image = image
+            """dct"""
+            dct = get_dct(example1, self.parameters["get_dct"])
+            # fig = plt.figure(figsize=(1.1, 1.1))
+            # ax = fig.add_subplot(111)
+            # ax.pcolormesh(range(dct.shape[0]),
+            #               range(dct.shape[0]),
+            #               np.flip(dct, 0), cmap="Greys")
+            # plt.xticks(color='w')
+            # plt.yticks(color='w')
+            # buf = io.BytesIO()
+            # fig.savefig(buf)
+            # buf.seek(0)
+            # image = Image.open(buf)
+            # image = ImageTk.PhotoImage(image)
+            # self.images_1[3].configure(image=image)
+            # self.images_1[3].image = image
 
-        """gradient"""
-        hist = get_gradient(example1, self.parameters["get_gradient"])
-        # fig = plt.figure(figsize=(1.1, 1.1))
-        # ax = fig.add_subplot(111)
-        # ax.plot(range(0, len(hist)), hist)
-        # plt.xticks(color='w')
-        # plt.yticks(color='w')
-        # buf = io.BytesIO()
-        # fig.savefig(buf)
-        # buf.seek(0)
-        # image = Image.open(buf)
-        # image = ImageTk.PhotoImage(image)
-        # self.images_1[4].configure(image=image)
-        # self.images_1[4].image = image
+            """gradient"""
+            hist = get_gradient(example1, self.parameters["get_gradient"])
+            # fig = plt.figure(figsize=(1.1, 1.1))
+            # ax = fig.add_subplot(111)
+            # ax.plot(range(0, len(hist)), hist)
+            # plt.xticks(color='w')
+            # plt.yticks(color='w')
+            # buf = io.BytesIO()
+            # fig.savefig(buf)
+            # buf.seek(0)
+            # image = Image.open(buf)
+            # image = ImageTk.PhotoImage(image)
+            # self.images_1[4].configure(image=image)
+            # self.images_1[4].image = image
 
-        """scale"""
-        image = Image.fromarray(cv2.resize(example1,
-                                           (int(self.parameters["get_scale"] * example1.shape[0]),
-                                            int(self.parameters["get_scale"] * example1.shape[1])),
-                                           interpolation=cv2.INTER_AREA))
-        # image = ImageTk.PhotoImage(image)
-        # self.images_1[5].configure(image=image)
-        # self.images_1[5].image = image
+            """scale"""
+            image = Image.fromarray(cv2.resize(example1,
+                                               (int(self.parameters["get_scale"] * example1.shape[0]),
+                                                int(self.parameters["get_scale"] * example1.shape[1])),
+                                               interpolation=cv2.INTER_AREA))
+            # image = ImageTk.PhotoImage(image)
+            # self.images_1[5].configure(image=image)
+            # self.images_1[5].image = image
 
-        image = Image.fromarray(self.data[0][10 * v[0]] * 255)
-        image = ImageTk.PhotoImage(image)
-        self.images_1[1].configure(image=image)
-        self.images_1[1].image = image
+            image = Image.fromarray(self.data[0][10 * v[0]] * 255)
+            image = ImageTk.PhotoImage(image)
+            self.images_1[1].configure(image=image)
+            self.images_1[1].image = image
+
+
 
 
 # The following code is added to facilitate the Scrolled widgets you specified.
